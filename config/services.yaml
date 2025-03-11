@@ -23,9 +23,15 @@ services:
     App\Repository\UserRepository:
         arguments: ['@doctrine']
     
+    App\Repository\MonsterRepository:
+        arguments: ['@doctrine']
+    
     App\Security\Jwt\KeyReader: ~
 
     App\Controller\APIController:
         arguments: ['@App\Repository\UserRepository']
+    
+    App\Controller\MonsterController:
+        arguments: ['@App\Repository\MonsterRepository']
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
