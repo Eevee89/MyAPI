@@ -32,6 +32,4 @@ services:
         arguments: ['@App\Repository\UserRepository']
     
     App\Controller\MonsterController:
-        arguments: ['@App\Repository\MonsterRepository']
-    # add more service definitions when explicit configuration is needed
-    # please note that last definitions always *replace* previous ones
+        arguments: ['@App\Repository\MonsterRepository','@App\Repository\GameRepository']
