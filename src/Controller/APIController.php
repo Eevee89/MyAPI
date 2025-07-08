@@ -35,7 +35,7 @@ class APIController extends AbstractController
             return new JsonResponse(['message' => 'Bad request'], 400);
         }
 
-        if (!hash_equals($donnees["password"], $user->getPassword())) {
+        if (!password_verify($donnees["password"], $user->getPassword())) {
             return new JsonResponse(['message' => 'Unauthorized'], 401);
         }
 
