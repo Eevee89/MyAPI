@@ -9,7 +9,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Service\AuthService;
 use App\Repository\MonsterRepository;
 use App\Repository\GameRepository;
+use OpenApi\Attributes as OA;
 
+#[OA\Tag("Spinner MH")]
 class MonsterController extends AbstractController
 {
     private $monsterRepository;
@@ -22,6 +24,39 @@ class MonsterController extends AbstractController
     }
     
     #[Route('/spinner_mh/monsters', name: 'spinner_mh_monsters', methods: ['GET'])]
+    #[OA\Parameter(
+        name: 'game',
+        in: 'query',
+        required: true,
+        schema: new OA\Schema(type: 'string'),
+        example: "MHW"
+    )]
+    #[OA\Parameter(
+        name: 'rank',
+        in: 'query',
+        required: true,
+        schema: new OA\Schema(type: 'string'),
+        example: "HR"
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'OK',
+        content: new OA\MediaType(
+            mediaType: "application/json",
+            schema: new OA\Schema(
+                type: "array",
+                items: new OA\Items(type: 'string', example: "Grand Jagras")
+            )
+        )
+    )]
+    #[OA\Response(
+        response: 400,
+        description: 'Bad request'
+    )]
+    #[OA\Response(
+        response: 401,
+        description: 'Unauthorized'
+    )]
     public function getMonsters(Request $request): JsonResponse
     {
         $authorizationHeader = $request->headers->get("authorization");
@@ -50,6 +85,31 @@ class MonsterController extends AbstractController
     }
 
     #[Route('/spinner_mh/games', name: 'spinner_mh_games', methods: ['GET'])]
+    #[OA\Response(
+        response: 200,
+        description: 'OK',
+        content: new OA\MediaType(
+            mediaType: "application/json",
+            schema: new OA\Schema(
+                type: "array",
+                items: new OA\Items(
+                    type: "object",
+                    properties: [
+                        new OA\Property(property: "abrev", type: "string", example: "MHW"),
+                        new OA\Property(property: "name", type: "string", example: "Monster Hunter World")
+                    ]
+                )
+            )
+        )
+    )]
+    #[OA\Response(
+        response: 400,
+        description: 'Bad request'
+    )]
+    #[OA\Response(
+        response: 401,
+        description: 'Unauthorized'
+    )]
     public function getGames(Request $request): JsonResponse
     {
         $authorizationHeader = $request->headers->get("authorization");

@@ -66,7 +66,7 @@ class JwtEncoder implements JWTEncoderInterface
     {
         $payload = $this->decode($jwt);
         if(!isset($payload['exp'])){
-          return "";
+            return "";
         }
         $payload['exp'] = time() + 3600;
 

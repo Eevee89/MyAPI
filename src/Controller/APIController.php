@@ -11,7 +11,9 @@ use App\Repository\UserRepository;
 use App\Manager\UserManager;
 use App\Security\Jwt\JwtEncoder;
 use App\Serializer\MySerializer;
+use OpenApi\Attributes as OA;
 
+#[OA\Tag("Login")]
 class APIController extends AbstractController
 {
     private $jwtEncoder;
@@ -23,10 +25,41 @@ class APIController extends AbstractController
         $this->repository = $repository;
     }
 
-    #[Route('/api/login', name: 'api_login', methods: ['POST'])]
+    #[Route('/login', name: 'login', methods: ['POST'])]
+    #[OA\RequestBody(
+        required: true,
+        content: new OA\MediaType(
+            mediaType: "application/json",
+            schema: new OA\Schema(
+                type: "object",
+                properties: [
+                    new OA\Property(property: "username", type: "string"),
+                    new OA\Property(property: "password", type: "string")
+                ],
+                required: ["username", "password"]
+            )
+        )
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'Login Successful',
+        content: new OA\MediaType(
+            mediaType: "application/json",
+            schema: new OA\Schema(
+                type: "object",
+                properties: [
+                    new OA\Property(property: "message", type: "string"),
+                    new OA\Property(property: "token", type: "string")
+                ]
+            )
+        )
+    )]
+    #[OA\Response(
+        response: 400,
+        description: 'Bad request'
+    )]
     public function login(Request $request): JsonResponse
     {
-
         $donnees = json_decode($request->getContent(), true);
 
         $user = $this->repository->findByFullName($donnees["username"]);
@@ -36,7 +69,7 @@ class APIController extends AbstractController
         }
 
         if (!password_verify($donnees["password"], $user->getPassword())) {
-            return new JsonResponse(['message' => 'Unauthorized'], 401);
+            return new JsonResponse(['message' => 'Bad request'], 400);
         }
 
         $token = $this->jwtEncoder->encode([
@@ -46,8 +79,6 @@ class APIController extends AbstractController
         ]);
 
         $response = new JsonResponse(['message' => 'Login successful', 'token' => $token]);
-        $cookie = Cookie::create('jwt_token', $token, time() + 3600, '/', null, true, true, false, 'lax');
-        $response->headers->setCookie($cookie);
 
         return $response;
     }

@@ -27,4 +27,41 @@ class QuoteRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
+
+    /**
+     * @return Quote[]
+     */
+    public function findWithCategoryAndType(?int $category, ?bool $type): array
+    {
+        if (null !== $category) {
+            if (null !== $type) {
+                return $this->createQueryBuilder('q')
+                    ->where('q.category = :category')
+                    ->andWhere('q.type = :type')
+                    ->setParameter('category', $category)
+                    ->setParameter('type', $type)
+                    ->getQuery()
+                    ->getResult()
+                ;
+            }
+            return $this->createQueryBuilder('q')
+                ->where('q.category = :category')
+                ->setParameter('category', $category)
+                ->getQuery()
+                ->getResult()
+            ;
+        }
+        if (null !== $type) {
+            return $this->createQueryBuilder('q')
+                ->where('q.type = :type')
+                ->setParameter('type', $type)
+                ->getQuery()
+                ->getResult()
+            ;
+        }
+        return $this->createQueryBuilder('q')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }
