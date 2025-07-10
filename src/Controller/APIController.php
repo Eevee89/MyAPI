@@ -72,11 +72,7 @@ class APIController extends AbstractController
             return new JsonResponse(['message' => 'Bad request'], 400);
         }
 
-        $token = $this->jwtEncoder->encode([
-            'user' => $user->getFullName(),
-            'password' => $user->getPassword(),
-            'roles' => $user->getRoles(),
-        ]);
+        $token = $this->jwtEncoder->encodePayload($user);
 
         $response = new JsonResponse(['message' => 'Login successful', 'token' => $token]);
 

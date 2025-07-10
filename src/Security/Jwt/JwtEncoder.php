@@ -2,6 +2,7 @@
 
 namespace App\Security\Jwt;
 
+use App\Entity\User;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
@@ -39,12 +40,12 @@ class JwtEncoder implements JWTEncoderInterface
         }
     }
 
-    public function encodePayload(UserInterface $user): string
+    public function encodePayload(User $user): string
     {
         $payload = [
-            'username' => $user->getUserIdentifier(), // or getUsername() depending on symfony version.
+            'username' => $user->getFullname(),
             'roles' => $user->getRoles(),
-            'exp' => time() + 3600, // Token expiration time (1 hour)
+            'exp' => time() + 3600,
         ];
 
         return $this->encode($payload);

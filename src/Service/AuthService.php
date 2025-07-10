@@ -30,6 +30,13 @@ class AuthService
             $jwtEncoder = new JwtEncoder(new MySerializer());
             $res = $jwtEncoder->decode($token);
 
+            var_dump($res);die;
+
+            if ($res["exp"] > time()) {
+                $return["message"] = "Expired token";
+                return $return;
+            }
+
             $return["userInfos"] = $res;
             $return["message"] = "";
 
