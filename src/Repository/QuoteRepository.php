@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Quote;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -23,6 +24,21 @@ class QuoteRepository extends ServiceEntityRepository
     public function findAll(): array
     {
         return $this->createQueryBuilder('q')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * @return Quote[]
+     */
+    public function findByUser(string $username): array
+    {
+        return $this->createQueryBuilder('q')
+            ->leftJoin('q.user', 'u')
+            ->addSelect('u.fullname')
+            ->where('u.fullname = :username')
+            ->setParameter('username', $username)
             ->getQuery()
             ->getResult()
         ;
