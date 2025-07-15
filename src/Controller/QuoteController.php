@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\AuthService;
 use App\Repository\QuoteRepository;
-use App\Repository\UserRepository;
 use OpenApi\Attributes as OA;
 
 #[OA\Tag("Say The Line")]
@@ -18,13 +17,11 @@ use OpenApi\Attributes as OA;
 class QuoteController extends AbstractController
 {
     private $repository;
-    private $userRepository;
     private EntityManagerInterface $entityManager;
 
-    public function __construct(QuoteRepository $repository, UserRepository $userRepository, EntityManagerInterface $entityManager)
+    public function __construct(QuoteRepository $repository, EntityManagerInterface $entityManager)
     {
         $this->repository = $repository;
-        $this->userRepository = $userRepository;
         $this->entityManager = $entityManager;
     }
     
@@ -95,7 +92,7 @@ class QuoteController extends AbstractController
             foreach($quotes as $quote) {
                 $res[] = [
                     "id" => $quote->getId(),
-                    "username" => $quote->getUser() ? $quote->getUser()->getFullname() : 'N/A',
+                    "username" => $quote->getUser(),
                     'category' => $quote->getCategory(),
                     'quote' => $quote->getQuote(),
                     'oeuvre' => $quote->getOeuvre(),
@@ -188,7 +185,7 @@ class QuoteController extends AbstractController
                     'answer' => $quote->getAnswer(),
                 ];
             }
-            return new JsonResponse($quotes);
+            return new JsonResponse($res);
         }
 
         return new JsonResponse(['message' => 'Unauthorized'], 401);
@@ -278,10 +275,9 @@ class QuoteController extends AbstractController
             }
 
             $quoteEntity = new Quote();
-            $user = $this->userRepository->findByFullname($res["user"]);
 
             $quoteEntity->setCategory($data['category']);
-            $quoteEntity->setUser($user);
+            $quoteEntity->setUser($res["username"]);
             $quoteEntity->setQuote($data['quote']);
             $quoteEntity->setOeuvre($data['oeuvre']);
             $quoteEntity->setType($data['type']);

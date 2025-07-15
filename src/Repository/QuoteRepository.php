@@ -35,9 +35,7 @@ class QuoteRepository extends ServiceEntityRepository
     public function findByUser(string $username): array
     {
         return $this->createQueryBuilder('q')
-            ->leftJoin('q.user', 'u')
-            ->addSelect('u.fullname')
-            ->where('u.fullname = :username')
+            ->where('q.username = :username')
             ->setParameter('username', $username)
             ->getQuery()
             ->getResult()

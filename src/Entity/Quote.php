@@ -14,9 +14,8 @@ class Quote
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
-    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: false)]
-    private ?User $user = null;
+    #[ORM\Column()]
+    private ?string $username = null;
 
     #[ORM\Column(type: Types::SMALLINT)]
     private ?int $category = null;
@@ -47,14 +46,14 @@ class Quote
         return $this->id;
     }
 
-    public function getUser(): ?User
+    public function getUser(): ?string
     {
-        return $this->user;
+        return $this->username;
     }
 
-    public function setUser(?User $user): static
+    public function setUser(?string $username): static
     {
-        $this->user = $user;
+        $this->username = $username;
 
         return $this;
     }
