@@ -9,9 +9,8 @@ use App\Entity\MonsterGameRank;
 use App\Repository\MonsterGameRankRepository;
 use App\Repository\GameRepository;
 use App\Repository\RankRepository;
-use Symfony\Bundle\FrameworkBundle\Manager\AbstractManager;
 
-class MonsterManager extends AbstractManager
+class MonsterManager
 {
     public function __construct(
         private MonsterGameRankRepository $mgrRepository, 
