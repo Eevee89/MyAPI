@@ -27,3 +27,9 @@ services:
         arguments: ['@doctrine']
     
     App\Security\Jwt\KeyReader: ~
+
+    App\Controller\APIController:
+        arguments: ['@App\Repository\UserRepository']
+    
+    App\Controller\MonsterController:
+        arguments: ['@App\Manager\MonsterManager','@App\Repository\GameRepository']
