@@ -17,7 +17,7 @@ class Game
     private ?string $name = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $abrevation = null;
+    private ?string $abreviation = null;
 
     public function getId(): ?int
     {
@@ -38,13 +38,21 @@ class Game
 
     public function getAbrev(): ?string
     {
-        return $this->abrevation;
+        return $this->abreviation;
     }
 
-    public function setAbrev(string $abrevation): static
+    public function setAbrev(string $abreviation): static
     {
-        $this->abrevation = $abrevation;
+        $this->abreviation = $abreviation;
 
         return $this;
+    }
+
+    public function toArray(): array
+    {
+        return [
+            "abrev" => $this->abreviation,
+            "name" => $this->name
+        ];
     }
 }

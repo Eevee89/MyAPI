@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\MonsterRepository;
+use App\Repository\RankRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: MonsterRepository::class)]
-class Monster
+#[ORM\Entity(repositoryClass: RankRepository::class)]
+class Rank
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -15,6 +15,9 @@ class Monster
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
+
+    #[ORM\Column(length: 50)]
+    private ?string $abreviation = null;
 
     public function getId(): ?int
     {
@@ -29,6 +32,18 @@ class Monster
     public function setName(string $name): static
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function getAbrev(): ?string
+    {
+        return $this->abreviation;
+    }
+
+    public function setAbrev(string $abreviation): static
+    {
+        $this->abreviation = $abreviation;
 
         return $this;
     }

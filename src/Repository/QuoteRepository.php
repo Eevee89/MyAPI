@@ -17,18 +17,6 @@ class QuoteRepository extends ServiceEntityRepository
         parent::__construct($registry, Quote::class);
     }
 
-
-    /**
-     * @return Quote[]
-     */
-    public function findAll(): array
-    {
-        return $this->createQueryBuilder('q')
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-
     /**
      * @return Quote[]
      */

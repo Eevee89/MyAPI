@@ -7,21 +7,17 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\AuthService;
-use App\Repository\MonsterRepository;
+use App\Manager\MonsterManager;
 use App\Repository\GameRepository;
 use OpenApi\Attributes as OA;
 
 #[OA\Tag("Spinner MH")]
 class MonsterController extends AbstractController
 {
-    private $monsterRepository;
-    private $gameRepository;
-
-    public function __construct(MonsterRepository $monsterRepository, GameRepository $gameRepository)
-    {
-        $this->monsterRepository = $monsterRepository;
-        $this->gameRepository = $gameRepository;
-    }
+    public function __construct(
+        private MonsterManager $manager, 
+        private GameRepository $gameRepository
+    ) { }
     
     #[Route('/spinner_mh/monsters', name: 'spinner_mh_monsters', methods: ['GET'])]
     #[OA\Parameter(
@@ -76,8 +72,7 @@ class MonsterController extends AbstractController
         }
         
         if (isset($res['roles']) && in_array("ROLE_API", $res["roles"])) {
-            $monsters = $this->monsterRepository->findByGame($game, $rank);
-            $names = array_map(fn($monster) => $monster->getName(), $monsters);
+            $names = $this->manager->getMonsters($game, $rank);
             return new JsonResponse($names);
         }
 
@@ -123,14 +118,7 @@ class MonsterController extends AbstractController
         
         if (isset($res['roles']) && in_array("ROLE_API", $res["roles"])) {
             $games = $this->gameRepository->findAll();
-            $res = [];
-            foreach ($games as $game) {
-                $res[] = [
-                    "abrev" => $game->getAbrev(),
-                    "name" => $game->getName()
-                ];
-            }
-            return new JsonResponse($res);
+            return new JsonResponse(array_map(fn($game) => $game->toArray(), $games));
         }
 
         return new JsonResponse(['message' => 'Unauthorized'], 401);

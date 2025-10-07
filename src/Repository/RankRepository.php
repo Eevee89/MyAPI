@@ -2,17 +2,17 @@
 
 namespace App\Repository;
 
-use App\Entity\Game;
+use App\Entity\Rank;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Game>
+ * @extends ServiceEntityRepository<Rank>
  */
-class GameRepository extends ServiceEntityRepository
+class RankRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Game::class);
+        parent::__construct($registry, Rank::class);
     }
 }
