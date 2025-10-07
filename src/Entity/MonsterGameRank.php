@@ -13,13 +13,16 @@ class MonsterGameRank
     #[ORM\Column]
     private ?int $id = null;
     
-    #[ORM\Column(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Monster::class)]
+    #[ORM\JoinColumn(nullable: false)]
     private Monster $monster;
 
-    #[ORM\Column(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Game::class)]
+    #[ORM\JoinColumn(nullable: false)]
     private Game $game;
 
-    #[ORM\Column(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Rank::class)]
+    #[ORM\JoinColumn(nullable: false)]
     private Rank $rank;
 
     public function getMonster(): Monster
