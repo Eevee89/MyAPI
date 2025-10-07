@@ -1,7 +1,6 @@
 <?php
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,7 +13,7 @@ use App\Serializer\MySerializer;
 use OpenApi\Attributes as OA;
 
 #[OA\Tag("Login")]
-class APIController extends AbstractController
+class APIController
 {
     private $jwtEncoder;
     private $repository;

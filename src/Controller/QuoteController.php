@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Entity\Quote;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,7 +13,7 @@ use OpenApi\Attributes as OA;
 
 #[OA\Tag("Say The Line")]
 #[Route('/saytheline')]
-class QuoteController extends AbstractController
+class QuoteController
 {
     private $repository;
     private EntityManagerInterface $entityManager;
