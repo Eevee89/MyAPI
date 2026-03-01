@@ -16,10 +16,10 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
-    public function findByFullName($username): ?User 
+    public function findByUserName($username): ?User 
     {
         return $this->createQueryBuilder('u')
-            ->andWhere('u.fullname = :val')
+            ->andWhere('u.username = :val')
             ->setParameter('val', $username)
             ->getQuery()
             ->getOneOrNullResult()

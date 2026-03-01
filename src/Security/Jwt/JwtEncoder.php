@@ -43,7 +43,7 @@ class JwtEncoder implements JWTEncoderInterface
     public function encodePayload(User $user): string
     {
         $payload = [
-            'username' => $user->getFullname(),
+            'username' => $user->getUsername(),
             'roles' => $user->getRoles(),
             'exp' => time() + 3600,
         ];

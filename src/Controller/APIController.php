@@ -62,7 +62,7 @@ class APIController extends AbstractController
     {
         $donnees = json_decode($request->getContent(), true);
 
-        $user = $this->repository->findByFullName($donnees["username"]);
+        $user = $this->repository->findByUserName($donnees["username"]);
 
         if (!$user) {
             return new JsonResponse(['message' => 'Bad request'], 400);
