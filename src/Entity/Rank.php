@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\RankRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\Table(name: '`rank`')]
 #[ORM\Entity(repositoryClass: RankRepository::class)]
 class Rank
 {
