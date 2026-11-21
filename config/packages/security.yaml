@@ -20,3 +20,6 @@ security:
             stateless: true
             jwt: ~
             provider: app_user_provider
+    
+    access_control:
+        - { path: ^/api/divia, roles: PUBLIC_ACCESS }
